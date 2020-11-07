@@ -16,6 +16,7 @@ class NewsListState extends State<NewsList> {
   var itemNum;
   var items = [];
 
+  // to retrieve the id's ....................................
   Future getList() async {
     print("get list started ---------------------");
     String host = "https://hacker-news.firebaseio.com/v0/topstories.json";
@@ -26,21 +27,16 @@ class NewsListState extends State<NewsList> {
       itemNum = jsonDecode(response.body) as List;
       print(itemNum.runtimeType);
 
-      // setState(() {
-      //   widget.isLoading = false;
-      // });
       return itemNum;
-      // getItems();
     } else {
       throw Exception("Failed to Load items");
     }
   }
 
+  // to retrieve the items ..............................
+
   Future getItems() async {
-    // Future.wait(getList());
-    // await getList();
     print("getitems started ---------------------" + itemNum.length.toString());
-    // var items;
     var count = 1;
     for (var num in itemNum) {
       print("insisde for loop");
@@ -68,61 +64,6 @@ class NewsListState extends State<NewsList> {
     }
 
     return items;
-    // getItems();
-  }
-
-  //--------------------------------------------------------
-  // Future getList() async {
-  //   var itemNum;
-
-  //   String host = "https://hacker-news.firebaseio.com/v0/topstories.json";
-  //   var response = await http.get(host);
-  //   var count = 1;
-  //   if (response.statusCode == 200) {
-  //     // retrieving and parsing top stories list
-  //     itemNum = jsonDecode(response.body) as List;
-  //     print(itemNum.runtimeType);
-  //     // parsing each items and adding to the list
-  //     for (var num in itemNum) {
-  //       if (count > 10) {
-  //         break;
-  //       }
-  //       var url = "https://hacker-news.firebaseio.com/v0/item/" +
-  //           num.toString() +
-  //           ".json?print=pretty";
-  //       var res = await http.get(url);
-  //       if (res.statusCode == 200) {
-  //         var temp = jsonDecode(res.body) as Map;
-  //         items.add(temp);
-  //       } else {
-  //         print("error");
-  //       }
-  //       count++;
-  //       print(res.statusCode);
-  //     }
-  //     // print(itemNum.length);
-  //     print(items);
-  //   } else {
-  //     throw Exception("Failed to Load");
-  //   }
-
-  //   return items;
-  // //-----------------------------------------------------------
-
-  // void apicall() async {
-  //   itemNum = await getList();
-  //   setState(() {
-  //     widget.isLoading = false;
-  //   });
-  //   // return temp;
-  // }
-
-  @override
-  void initState() {
-    // getList();
-    // apicall();
-
-    super.initState();
   }
 
   @override
