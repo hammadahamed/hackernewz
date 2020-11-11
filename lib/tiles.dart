@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hackernewz/essentials.dart';
 
 class Tiles extends StatelessWidget {
   final title, author, score;
@@ -8,12 +9,14 @@ class Tiles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MyColors myColors = MyColors();
+
     return Padding(
       padding: const EdgeInsets.only(left: 25, right: 20, top: 5),
       child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Color(0xff3f3f3f),
+            color: myColors.mattegreyFg,
           ),
           child: ListTile(
             contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -28,11 +31,11 @@ class Tiles extends StatelessWidget {
               alignment: Alignment.bottomRight,
               child: Text(
                 "by  " + author,
-                style: TextStyle(color: Colors.white70),
+                style: TextStyle(color: myColors.darkWhite),
               ),
             ),
             trailing: CircleAvatar(
-              backgroundColor: Color(0xff8c3f8e),
+              backgroundColor: myColors.chocoViolet,
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Text(

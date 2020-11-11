@@ -1,7 +1,17 @@
 import 'dart:convert';
-// import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+class MyColors {
+  Color _matteBlackBg = Color(0xff2b2b2b);
+  Color mattegreyFg = Color(0xff3f3f3f);
+  Color chocoViolet = Color(0xff8c3f8e);
+  Color darkWhite = Colors.white70;
+
+  get matteBlackBg => _matteBlackBg;
+}
+
+// to call the apis
 class ApiCaller {
   var list;
 
@@ -14,6 +24,8 @@ class ApiCaller {
     return list;
   }
 }
+
+// to return web request URL ,because there are lots of url to interact to
 
 class GetUrl {
   String idListUrl = "https://hacker-news.firebaseio.com/v0/topstories.json";

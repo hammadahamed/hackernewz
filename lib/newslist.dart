@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:hackernewz/essentials.dart';
-import 'package:http/http.dart' as http;
 import 'package:hackernewz/tiles.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
@@ -15,16 +13,16 @@ class NewsList extends StatefulWidget {
 }
 
 class NewsListState extends State<NewsList> {
-  ApiCaller caller = ApiCaller();
+  ApiCaller apiCaller = ApiCaller();
   GetUrl getUrl = GetUrl();
 
-  var idList;
-  var items;
+  var idList = [];
+  var items = [];
   StreamController itemStream = StreamController();
 
   // to retrieve the id's ....................................
   getList() async {
-    idList = await caller.getRsponse(url: getUrl.idListUrl);
+    idList = await apiCaller.getRsponse(url: getUrl.idListUrl);
     idList = idList.toList();
   }
 
@@ -37,23 +35,12 @@ class NewsListState extends State<NewsList> {
       if (count > 10) {
         break;
       }
-
-      var res = await http.get(getUrl.getItemUrl(num));
-
-      if (res.statusCode == 200) {
-        var temp = jsonDecode(res.body) as Map;
-        // print(temp);
-        // items.add(temp);
-        itemStream.add(temp);
-        // yield temp;
-      } else {
-        print("error");
-      }
+      var temp = await apiCaller.getRsponse(url: getUrl.getItemUrl(num)) as Map;
+      itemStream.add(temp);
+      items.add(temp);
       count++;
-      // print(res.statusCode);
     }
     itemStream.done;
-    // return items;
   }
 
   //----------------------------------------------------------------------------
@@ -77,8 +64,10 @@ class NewsListState extends State<NewsList> {
     // this should be initialized ONLY here ,
     // bcoz the lists should again be empty whnever it rebuilds
     widget.isLoading = true;
-    idList = [];
-    items = [];
+    // idList = [];
+    // items = [];
+    MyColors myColors = MyColors();
+
     return StreamBuilder(
         stream: itemStream.stream,
         builder: (context, snap) {
@@ -87,11 +76,12 @@ class NewsListState extends State<NewsList> {
               snap.data == null) {
             return Center(
               child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(Color(0xff8c3f8e)),
+                valueColor: AlwaysStoppedAnimation(myColors.chocoViolet),
               ),
             );
           }
-          items.add(snap.data);
+          // items.add(snap.data);
+          // snap.data = null;
 
           return ListView.builder(
               itemCount: items.length,

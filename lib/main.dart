@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackernewz/newslist.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:hackernewz/newslist2.dart';
+import 'package:hackernewz/essentials.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,8 +15,6 @@ class MyApp extends StatelessWidget {
       title: 'Hackers News',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // primaryColor: Colors.red[900],
-        // accentColor: Colors.grey[900],
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: Home(),
@@ -30,51 +28,60 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  MyColors myColors = MyColors();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xff2b2b2b),
-        centerTitle: true,
-        title: Text(
-          "HACKER NEWS  ",
-          style: GoogleFonts.righteous(fontSize: 29, color: Colors.white),
+    Orientation orientation = MediaQuery.of(context).orientation;
+
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: myColors.matteBlackBg,
+          centerTitle: true,
+          title: Text("HACKER NEWS  ",
+              style: GoogleFonts.baloo(
+                  fontSize: 29,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w100)),
         ),
-      ),
-      backgroundColor: Color(0xff2b2b2b),
-      body: Container(
-        height: MediaQuery.of(context).size.height - 200,
-        child: ListView(
-          children: <Widget>[
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 5, bottom: 10, left: 25),
-                child: Container(
-                  width: 150,
-                  decoration: BoxDecoration(
-                      color: Color(0xff8c3f8e),
-                      borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(20),
-                          topRight: Radius.circular(20))),
-                  child: Center(
-                    child: Text(
-                      "Top 10 Stories",
-                      style: GoogleFonts.staatliches(
-                        fontSize: 28,
-                        color: Colors.white,
+        backgroundColor: myColors.matteBlackBg,
+        body: Container(
+          height: MediaQuery.of(context).size.height - 80,
+          child: ListView(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 5, bottom: 10, left: 25),
+                  child: Container(
+                    width: 150,
+                    decoration: BoxDecoration(
+                        color: Color(0xff8c3f8e),
+                        borderRadius: BorderRadius.circular(25)),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Top  10  Stories",
+                          style: GoogleFonts.staatliches(
+                            fontSize: 22,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 1.5,
-              child: NewsList(),
-            ),
-          ],
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: orientation == Orientation.landscape
+                    ? MediaQuery.of(context).size.height - 150
+                    : MediaQuery.of(context).size.height - 150,
+                child: NewsList(),
+              ),
+            ],
+          ),
         ),
       ),
     );
