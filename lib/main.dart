@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackernewz/newslist.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hackernewz/newslist2.dart';
+// import 'package:hackernewz/newslist2.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,48 +34,48 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xff2b2b2b),
         centerTitle: true,
         title: Text(
           "HACKER NEWS  ",
-          style: GoogleFonts.righteous(fontSize: 29, color: Colors.black),
+          style: GoogleFonts.righteous(fontSize: 29, color: Colors.white),
         ),
       ),
-      backgroundColor: Colors.white,
-      body: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 10,
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              height: 40,
-              width: 150,
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.cyan,
-                    borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(20),
-                        topRight: Radius.circular(20))),
-                // color: Colors.cyan,
-                child: Center(
-                  child: Text(
-                    "Top 10 Stories",
-                    style: GoogleFonts.staatliches(
-                      fontSize: 28,
-                      color: Colors.white,
+      backgroundColor: Color(0xff2b2b2b),
+      body: Container(
+        height: MediaQuery.of(context).size.height - 200,
+        child: ListView(
+          children: <Widget>[
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 5, bottom: 10, left: 25),
+                child: Container(
+                  width: 150,
+                  decoration: BoxDecoration(
+                      color: Color(0xff8c3f8e),
+                      borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(20),
+                          topRight: Radius.circular(20))),
+                  child: Center(
+                    child: Text(
+                      "Top 10 Stories",
+                      style: GoogleFonts.staatliches(
+                        fontSize: 28,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          NewsList(),
-        ],
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height / 1.5,
+              child: NewsList(),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,134 +1,108 @@
+import 'dart:async';
 import 'dart:convert';
-
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:hackernewz/essentials.dart';
 import 'package:http/http.dart' as http;
+import 'package:hackernewz/tiles.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
 // ignore: must_be_immutable
 class NewsList extends StatefulWidget {
-  bool isLoading = true;
-  // final List items = [];
+  bool isLoading;
   @override
   State<StatefulWidget> createState() => NewsListState();
 }
 
 class NewsListState extends State<NewsList> {
-  var itemNum;
-  var items = [];
+  ApiCaller caller = ApiCaller();
+  GetUrl getUrl = GetUrl();
+
+  var idList;
+  var items;
+  StreamController itemStream = StreamController();
 
   // to retrieve the id's ....................................
-  Future getList() async {
-    print("get list started ---------------------");
-    String host = "https://hacker-news.firebaseio.com/v0/topstories.json";
-    var response = await http.get(host);
-
-    if (response.statusCode == 200) {
-      // retrieving and parsing top stories list
-      itemNum = jsonDecode(response.body) as List;
-      print(itemNum.runtimeType);
-
-      return itemNum;
-    } else {
-      throw Exception("Failed to Load items");
-    }
+  getList() async {
+    idList = await caller.getRsponse(url: getUrl.idListUrl);
+    idList = idList.toList();
   }
 
-  // to retrieve the items ..............................
+  // to retrieve the items ....................................
 
-  Future getItems() async {
-    print("getitems started ---------------------" + itemNum.length.toString());
-    var count = 1;
-    for (var num in itemNum) {
-      print("insisde for loop");
+  getItems() async {
+    var count = 0;
+
+    for (var num in idList) {
       if (count > 10) {
-        print("break");
         break;
       }
-      var url = "https://hacker-news.firebaseio.com/v0/item/" +
-          num.toString() +
-          ".json";
-      var res = await http.get(url);
+
+      var res = await http.get(getUrl.getItemUrl(num));
 
       if (res.statusCode == 200) {
         var temp = jsonDecode(res.body) as Map;
-        print(temp);
+        // print(temp);
         // items.add(temp);
-        print("cheakpoint");
-
-        items.add(temp);
+        itemStream.add(temp);
+        // yield temp;
       } else {
         print("error");
       }
       count++;
-      print(res.statusCode);
+      // print(res.statusCode);
     }
+    itemStream.done;
+    // return items;
+  }
 
-    return items;
+  //----------------------------------------------------------------------------
+  @override
+  void initState() {
+    getList().then((_) => getItems());
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    //todo
+    itemStream.close();
+    itemStream.stream.listen((event) {}).cancel();
+    itemStream.sink.close();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // Future.delayed(Duration(seconds: 2));
-    return Expanded(
-      child: FutureBuilder(
-          future: getList().then((value) => getItems()),
-          builder: (context, snap) {
-            if ((snap.connectionState == ConnectionState.none &&
-                    snap.hasData == false) ||
-                snap.data == null) {
-              return Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation(Colors.cyan),
-                ),
-              );
-            }
+    // this should be initialized ONLY here ,
+    // bcoz the lists should again be empty whnever it rebuilds
+    widget.isLoading = true;
+    idList = [];
+    items = [];
+    return StreamBuilder(
+        stream: itemStream.stream,
+        builder: (context, snap) {
+          if ((snap.connectionState == ConnectionState.none &&
+                  snap.hasData == false) ||
+              snap.data == null) {
+            return Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(Color(0xff8c3f8e)),
+              ),
+            );
+          }
+          items.add(snap.data);
 
-            return ListView.builder(
-                itemCount: snap.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  print(snap.data);
-                  return Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Container(
-                        decoration: BoxDecoration(
-                            border: Border(
-                                left: BorderSide(color: Colors.grey, width: 5)),
-                            // color: Colors.red,
-                            // borderRadius: BorderRadius.all(Radius.circular(10)),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.white60,
-                                  offset: Offset(0, 6),
-                                  blurRadius: 1),
-                            ]),
-                        child: ListTile(
-                          contentPadding:
-                              EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                          title: Text(
-                            snap.data[index]["title"],
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.w600),
-                          ),
-                          subtitle:
-                              Text("\n-" + snap.data[index]["by"].toString()),
-                          trailing: CircleAvatar(
-                            backgroundColor: Colors.cyan,
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Text(
-                                snap.data[index]["score"].toString(),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                    color: Colors.white),
-                              ),
-                            ),
-                          ),
-                          // isThreeLine: true,
-                        )),
-                  );
-                });
-          }),
-    );
+          return ListView.builder(
+              itemCount: items.length,
+              itemBuilder: (BuildContext context, int index) {
+                var obj = items[index];
+                return Tiles(
+                  title: obj["title"],
+                  author: obj["by"].toString(),
+                  score: obj["score"].toString(),
+                );
+              });
+        });
   }
 }

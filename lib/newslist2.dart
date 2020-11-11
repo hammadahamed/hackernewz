@@ -101,18 +101,17 @@ class NewsList2State extends State<NewsList2> {
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 10),
                             title: Text(
-                              snap.data[index]["title"],
+                              snap.data["title"],
                               style: TextStyle(
                                   fontSize: 22, fontWeight: FontWeight.w600),
                             ),
-                            subtitle:
-                                Text("\n-" + snap.data[index]["by"].toString()),
+                            subtitle: Text("\n-" + snap.data["by"].toString()),
                             trailing: CircleAvatar(
                               backgroundColor: Colors.cyan,
                               child: Padding(
                                 padding: const EdgeInsets.all(5.0),
                                 child: Text(
-                                  snap.data[index]["score"].toString(),
+                                  snap.data["score"].toString(),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 10,
