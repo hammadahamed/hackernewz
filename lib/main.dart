@@ -38,6 +38,8 @@ class _HomeState extends State<Home> {
         appBar: AppBar(
           backgroundColor: myColors.matteBlackBg,
           centerTitle: true,
+
+          ///app bar title
           title: Text("HACKER NEWS  ",
               style: GoogleFonts.baloo(
                   fontSize: 29,

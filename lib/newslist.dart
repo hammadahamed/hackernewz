@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:ui';
+// import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:hackernewz/essentials.dart';
 import 'package:hackernewz/tiles.dart';
@@ -22,7 +22,7 @@ class NewsListState extends State<NewsList> {
 
   // to retrieve the id's ....................................
   getList() async {
-    idList = await apiCaller.getRsponse(url: getUrl.idListUrl);
+    idList = await apiCaller.getResponse(url: getUrl.idListUrl);
     idList = idList.toList();
   }
 
@@ -35,7 +35,8 @@ class NewsListState extends State<NewsList> {
       if (count > 10) {
         break;
       }
-      var temp = await apiCaller.getRsponse(url: getUrl.getItemUrl(num)) as Map;
+      var temp =
+          await apiCaller.getResponse(url: getUrl.getItemUrl(num)) as Map;
       itemStream.add(temp);
       items.add(temp);
       count++;

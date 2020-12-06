@@ -15,7 +15,7 @@ class MyColors {
 class ApiCaller {
   var list;
 
-  Future<dynamic> getRsponse({url}) async {
+  Future<dynamic> getResponse({url}) async {
     var response = await http.get(url);
     if (response.statusCode == 200) {
       list = jsonDecode(response.body);

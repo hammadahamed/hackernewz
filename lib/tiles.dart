@@ -30,7 +30,7 @@ class Tiles extends StatelessWidget {
             subtitle: Align(
               alignment: Alignment.bottomRight,
               child: Text(
-                "by  " + author,
+                "author - " + author,
                 style: TextStyle(color: myColors.darkWhite),
               ),
             ),
