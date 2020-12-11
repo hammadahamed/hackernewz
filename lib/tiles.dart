@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hackernewz/essentials.dart';
+import 'package:hackernewz/webview.dart';
 
 class Tiles extends StatelessWidget {
-  final title, author, score;
+  final title, author, score, url, buildContext;
 
-  Tiles({this.title, this.author, this.score});
+  Tiles({this.title, this.author, this.score, this.url, this.buildContext});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext buildContext) {
     MyColors myColors = MyColors();
 
     return Padding(
@@ -19,6 +20,14 @@ class Tiles extends StatelessWidget {
             color: myColors.mattegreyFg,
           ),
           child: ListTile(
+            onTap: () {
+              print("url----");
+              print(url.runtimeType);
+              return showDialog(
+                context: buildContext,
+                builder: (context) => WebViewPg(url: url),
+              );
+            },
             contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             title: Text(
               title,

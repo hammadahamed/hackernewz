@@ -47,6 +47,8 @@ class _HomeState extends State<Home> {
                   fontWeight: FontWeight.w100)),
         ),
         backgroundColor: myColors.matteBlackBg,
+
+        /// container for "Top Stories"
         body: Container(
           height: MediaQuery.of(context).size.height - 80,
           child: ListView(
@@ -75,6 +77,8 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
+
+              /// Container to fit the news list & and bottom stable loader
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: orientation == Orientation.landscape
