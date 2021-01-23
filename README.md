@@ -1,6 +1,8 @@
 # hackernewz
 
-# swarashiya assignment
+# Simple app that can fetch and diaplay news from hackernews 
+
+# Hackernews API is used
 
 ## Getting Started
 
